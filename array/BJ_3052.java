@@ -1,0 +1,34 @@
+package array;
+
+import java.util.Scanner;
+
+public class BJ_3052 {
+	public static void main(String[] args) {
+		
+		Scanner scan = new Scanner(System.in);
+		
+		int[] arr = new int[10];
+		boolean bl;
+		int cnt =0;
+		for(int i =0; i< arr.length; i++) {
+			arr[i] = scan.nextInt() %42;
+		}
+		
+		for(int i =0; i<arr.length; i++) {
+			bl = false;
+			for(int k = i+1; k<arr.length ; k++) {
+				if( arr[i] == arr[k]) {
+					bl = true;
+					break;
+				}
+			}
+			if(bl == false) {
+				cnt ++;
+			}
+		}
+		System.out.println(cnt);
+		
+		
+				
+	}
+}
