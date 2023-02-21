@@ -9,59 +9,67 @@ public class P_72410 {
         String answer = "";
 
         // 1단계
-        new_id = new_id.toLowerCase();
-        String level2 = "";
-        // 2단계
-        for (int i = 0; i <new_id.length() ; i++) {
-            if(
-                    (new_id.charAt(i)>='a' && new_id.charAt(i)<='z') ||
-                    (new_id.charAt(i)>='0' && new_id.charAt(i)<='9') ||
-                    new_id.charAt(i) == '-' || new_id.charAt(i) == '_' || new_id.charAt(i) == '.'
-            ){
-                level2 += new_id.charAt(i);
-            }
-        }
-       new_id = level2;
+        String step1 = new_id.toLowerCase();
 
-        String level3 = "";
-        if(new_id.charAt(0) != '.' || new_id.length()==1) level3 += new_id.charAt(0);
-        //3단계
-        for (int i = 1; i <new_id.length() ; i++) {
-            if(new_id.charAt(i-1)=='.'&&new_id.charAt(i)!='.'){
-                level3 += "."+new_id.charAt(i);
-            }else if(new_id.charAt(i) !='.'){
-                level3 += new_id.charAt(i);
+        // 2단계
+        char[] step1_arr = step1.toCharArray();
+        StringBuilder step2 = new StringBuilder();
+        for (char c : step1_arr) {
+            if(
+                    (c>='a' && c<='z') ||
+                    (c>='0' && c<='9') ||
+                    c == '-' || c == '_' || c == '.'
+            ){
+                step2.append(c);
             }
         }
-        new_id = level3;
+
+        //3단계
+        String step3 = step2.toString().replace("..",".");
+        while (step3.contains("..")) step3 = step3.replace("..",".");
+
+
 
         // 4단계
-        if (new_id.charAt(0)=='.') {
-            if(new_id.length() == 1){
-                new_id = "";
-            }else {
-            new_id = new_id.substring(1);
+        String step4 = step3;
+        if(step4.length() > 0){
+            if(step4.charAt(0) =='.'){
+                step4 = step4.substring(1,step4.length());
             }
         }
 
+        if(step4.length() > 0){
+            if(step4.charAt(step4.length()-1) == '.'){
+                step4 = step4.substring(0,step4.length()-1);
+            }
+        }
 
         // 5단계
-        if(new_id.length() == 0) return "aaa";
+        String step5 = step4;
+        if(step5.equals("")) step5 = "a";
+
         // 6단계
-        else if(new_id.length() >= 16) {
-            new_id = new_id.substring(0,15);
-            if(new_id.charAt(new_id.length()-1) == '.'){
-                new_id = new_id.substring(0,14);
+
+        String step6 = step5;
+        if(step6.length() >= 16) {
+            step6 = step6.substring(0,15);
+            if(step6.charAt(step6.length()-1) == '.'){
+                step6 = step6.substring(0,step6.length()-1);
             }
         }
+
+
         // 7단계
-        if(new_id.length() <= 2){
-           while(new_id.length() !=3){
-               new_id += new_id.charAt(new_id.length()-1);
+        StringBuilder step7 = new StringBuilder(step6);
+
+        if(step7.length() <= 2){
+            char last = step7.charAt(step7.length() -1 );
+           while(step7.length() <3){
+               step7.append(last);
            }
         }
 
-        answer = new_id;
+        answer = String.valueOf(step7);
         return answer;
     }
 
