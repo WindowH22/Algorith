@@ -1,22 +1,18 @@
 package programers.lv1;
 
-import com.sun.tools.javac.Main;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class P_150370 {
     public ArrayList<Integer> solution(String today, String[] terms, String[] privacies) {
 
         ArrayList<Integer> answer = new ArrayList<>();
-        int[] todayDat = new int[3];
-
+        String todayDat = "";
         String[] todayDate = today.split("\\.");
 
         for (int i = 0; i < todayDate.length; i++) {
-            todayDat[i] = Integer.valueOf(todayDate[i]);
+            todayDat += todayDate[i];
         }
 
         Map<String,Integer> map = new HashMap<>();
@@ -29,39 +25,44 @@ public class P_150370 {
         for (int i = 0; i < privacies.length ; i++) {
             int[] dat = new int[3];
 
+
             String[] str = privacies[i].split(" ");
             String[] date = str[0].split("\\.");
 
             for (int j = 0; j <date.length ; j++) {
-                dat[i] = Integer.valueOf(date[i]);
+                dat[j] = Integer.valueOf(date[j]);
             }
 
             String type = str[1];
 
             if(map.containsKey(type)){
+
                 dat[1] += map.get(type);
-                if(dat[1] > 12){
-                   dat[1] -= 12;
-                   dat[0]++;
+
+
+                if(dat[1] > 12 && dat[1]%12 !=0) {
+
+                    dat[0] = dat[0] + dat[1] / 12;
+                    dat[1] = dat[1] % 12;
+                }else if(dat[1] > 12 && dat[1]%12 ==0){
+                    dat[0] = dat[0] + (dat[1]-12) / 12;
+                    dat[1] = 12;
                 }
+
             }
 
-            // 검증
-            if(todayDat[0] < dat[0]){
-                // 해당 배열 번호 추가
-                answer.add(i);
-            }else if(todayDat[0] == dat[0] && todayDat[1] < dat[1]){
-                // 해당 배열 번호 추가
-                answer.add(i);
-            }else if(todayDat[0] == dat[0] && todayDat[1] == dat[1] && todayDat[2] < dat[2]){
-                answer.add(i);
+            String infoDate = "";
+
+            for(int k: dat){
+                if(k<10) infoDate += "0" + k;
+                else{
+                    infoDate += k;
+                }
+
             }
 
+            if(Integer.valueOf(infoDate) <= Integer.valueOf(todayDat)) answer.add(i+1);
 
-        }
-
-        for(int i : answer){
-            System.out.println(i+ " : "+ i);
         }
 
         return answer;
@@ -70,9 +71,9 @@ public class P_150370 {
     public static void main(String[] args) {
         P_150370 p  = new P_150370();
 
-        String today ="2022.05.19";
-        String[] terms ={"A 6", "B 12", "C 3"};
-        String[] privacies ={"2021.05.02 A", "2021.07.01 B", "2022.02.19 C", "2022.02.20 C"};
+        String today ="2020.01.01";
+        String[] terms ={"Z 3", "D 5"};
+        String[] privacies ={"2019.01.01 D", "2019.11.15 Z", "2019.08.02 D", "2019.07.01 D", "2018.12.28 Z"};
 
         p.solution(today,terms,privacies);
     }
